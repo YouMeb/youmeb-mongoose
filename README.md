@@ -1,10 +1,10 @@
 # youmeb-mongoose
-### A started project for youmeb connecting mongoDB wiht mongoose
+### A package for youmeb framework connecting mongoDB with mongoose
 
 Features:
-* Quackly using
+* Quickly use
 
-## How to use angular-brunch-seed-livescript	
+## How to use youmeb-mongoose	
 
 * `youmeb generate:mongoose-model` to generate a new mongoose model
 * `youmeb generate:mongoose-model-delete` to delete a mongoose model
