@@ -1,0 +1,14 @@
+{ 
+  "name": "youmeb-mongoose",
+  "version": "0.0.1",
+  "description": "youmeb-mongoose",
+  "main": "mongoose.js",
+  "dependencies": {
+    "mongoose": "*",
+    "colors": "*"
+  },
+  "keywords": [
+    "youmeb-package"
+  ],
+  "author": "Po-Ju Chen(iamblue)"
+}
