@@ -6,11 +6,11 @@ var mongoose = require('mongoose');
 
 module.exports = function ($youmeb, $config, $prompt, $generator, $injector) {
   $youmeb.on('help', function (command, data, done) {
-    data.commands.push(['mongoos:egenerate:model', '', 'Generates a mongoose model']);
+    data.commands.push(['mongoose:generate:model', '', 'Generates a mongoose model']);
     done();
   });
 
-  var connectMongoose(config) {
+  var connectMongoose = function (config) {
     mongoose.connect(config.get('host') || 'localhost', config.get('db') || 'youmeb_app', config.get('port') || '27017');
   };
 
