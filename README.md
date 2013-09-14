@@ -2,13 +2,16 @@
 ### A package for youmeb framework connecting mongoDB with mongoose
 
 Features:
-* Quickly use
+* 
+* 
+
 
 ## How to use youmeb-mongoose	
 
 * `youmeb generate:mongoose-model` to generate a new mongoose model
-* `youmeb generate:mongoose-model-delete` to delete a mongoose model
-* `youmeb generate:mongoose-model-batchinsert` to batch insert mongoose models
+* `youmeb delete:mongoose-model` to delete a mongoose model
+* `youmeb backup:mongoose-model` to backup your mongoose model setting
+* `youmeb insert:mongoose-model` to batch insert your old mongoose model setting
 
 not finish...
 

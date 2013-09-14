@@ -8,6 +8,9 @@ var mongoose = require('mongoose');
 module.exports = function ($youmeb, $prompt, $generator,$injector) {
     $youmeb.on('help', function (command, data, done) {
         data.commands.push(['generate:mongoose-model', '', 'Generates a mongoose model']);
+        data.commands.push(['delete:mongoose-model', '', 'Delete a mongoose model']);
+        data.commands.push(['backup:mongoose-model', '', 'Backup your mongoose model setting']);
+        data.commands.push(['insert:mongoose-model', '', 'Batch insert your old mongoose model setting']);
         done();
     });
     // generate a model
@@ -22,7 +25,10 @@ module.exports = function ($youmeb, $prompt, $generator,$injector) {
           if (err) {
             return done(err);
           }
-          console.log(result);
+          //console.log(result);
+            
+          //read model.config.json
+
           //creat on model folder
           var generator  = $generator.create();
           var _tmpname = result.name.split('');
@@ -45,23 +51,26 @@ module.exports = function ($youmeb, $prompt, $generator,$injector) {
         });
   });
   // delete a model
-  $youmeb.on('cli-generate:mongoose-model-delete', function (parser, args, done) {
+  $youmeb.on('cli-delete:mongoose-model', function (parser, args, done) {
+    console.log('Please input you want to delete model name:');
     $prompt.get([
           {
-            name: 'You want to delete model name',
+            name: 'modelname',
             type: 'string'
-            //default: 'example.home'
           }
         ], function (err, result) {
+          //console.log(result)
           if (err) {
             return done(err);
           }
+          fs.unlink($youmeb.root+'/models/'+result.modelname+'.js', function (err) {
+            if (err) throw err;
+            console.log('successfully deleted /tmp/hello');
+          });
     })
   })
-  // log recard
-
   // older file(model) batch insert
-  $youmeb.on('cli-generate:mongoose-model-batchinsert', function (parser, args, done) {
+  $youmeb.on('cli-insert:mongoose-model', function (parser, args, done) {
       $prompt.get([
           {
             name: 'You want to delete model name',
@@ -69,21 +78,27 @@ module.exports = function ($youmeb, $prompt, $generator,$injector) {
             //default: 'example.home'
           }
         ], function (err, result) {
+
           if (err) {
             return done(err);
           }
       })
   })
   //Backup origin model info
-  $youmeb.on('cli-generate:mongoose-model-backup', function (parser, args, done) {
+  $youmeb.on('cli-backup:mongoose-model', function (parser, args, done) {
+    
   })
   //  
-  $injector.register('mongoose',mongoose);
-
-  //todo   detect heroku (process.env setting)
+  
   var _dburl = $youmeb.config.get('mongoDBurl');
   var _model = $youmeb.config.get('models');
+  //console.log(_model);
+  //todo   detect heroku (process.env setting)
   var mongooseStatus ={
+    //  reset model/index.js
+    // setconfig:function(){
+
+    // },
     mkdir:function(){
       fs.mkdir($youmeb.root+'/models', '0777', function(err,resault){
         if(err){
@@ -107,14 +122,27 @@ module.exports = function ($youmeb, $prompt, $generator,$injector) {
             console.log ('Succeeded connected to MongoDB: ' + _dburl);
           }
       });
-      require(path.join($youmeb.root, _model, 'index.js'))(mongoose,$youmeb);
+      if(!_model){
+          console.log('Please setting your model path on '+$youmeb.root+'/config/default.json, like "models":"models"');
+      }else{
+          require(path.join($youmeb.root, _model, 'index.js'))(mongoose,$youmeb);    
+      }
     }
   }
+  //$injector.register('startmongoose',mongooseStatus);
   //detect models/index.js
-  fs.readFile($youmeb.root+'/models/index.js',function(err,resault){
-      if(err){
-        mongooseStatus.mkdir();
+  this.on('init', function (config, done) {
+      $injector.register('mongoose',mongoose);
+      if ($youmeb.isCli) {
+          return done();
       }
-      mongooseStatus.connect()
+      fs.readFile($youmeb.root+'/models/index.js',function(err,resault){
+          if(err){
+            mongooseStatus.mkdir();
+          }
+          mongooseStatus.connect();
+          done();
+      })
   })
+
 }

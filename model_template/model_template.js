@@ -9,4 +9,5 @@ module.exports = function($mongoose){
 		createAt:      		  {type: Date, default: Date.now},
 	});
 	$mongoose.model('<%= bname %>', <%= name %>Schema); 
+	$mongoose.<%= bname %> = model('<%= bname %>');
 }
