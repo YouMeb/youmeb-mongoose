@@ -78,7 +78,7 @@ module.exports = function ($youmeb, $config, $prompt, $generator, $injector) {
       }
 
       if (typeof index === 'function') {
-        index(sequelize);
+        index(mongoose);
       }
 
       done(null);
